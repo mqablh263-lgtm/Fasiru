@@ -3,67 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شاشة العرض - مشروع فسيحوا القرآني</title>
+    <title>شاشة العرض - مشروع فسيروا القرآني</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+        
         :root {
-            --bg-color: #112c1e;
+            --bg-color: #112c1e; /* لون أخضر فخم مطابق للصورة */
             --card-bg: rgba(255, 255, 255, 0.05);
             --gold: #d4af37;
+            --silver: #e0e0e0;
+            --bronze: #cd7f32;
             --text-main: #ffffff;
             --text-muted: #a3b1ab;
         }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Tajawal', sans-serif; padding: 30px; direction: rtl; margin: 0; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; color: var(--gold); font-size: 2.5rem; margin-bottom: 40px; text-shadow: 0 0 10px rgba(212,175,55,0.4); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 2px solid var(--gold); border-radius: 16px; padding: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .name { font-size: 1.8rem; font-weight: 900; }
-        .score { font-size: 1.4rem; color: #a5d6a7; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 12px; border: 1px solid #2e7d32; }
+
+        body {
+            margin: 0; font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color); color: var(--text-main);
+            min-height: 100vh; padding: 70px 20px 40px 20px;
+            position: relative; overflow-x: hidden;
+        }
+
+        /* ---------------- الشريط العلوي ---------------- */
+        .top-nav {
+            position: absolute; top: 0; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; z-index: 10;
+        }
+        .nav-buttons { display: flex; gap: 15px; }
+        .nav-btn, .clock-widget {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted); padding: 8px 18px; border-radius: 25px;
+            font-family: inherit; font-size: 0.95em; display: flex; align-items: center; gap: 8px;
+            transition: 0.3s; cursor: pointer;
+        }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+        .nav-btn.gold-outline { border-color: rgba(212, 175, 55, 0.4); color: var(--gold); }
+        .nav-btn.gold-outline:hover { background: rgba(212, 175, 55, 0.1); }
+        .clock-widget { cursor: default; }
+        .fullscreen-icon { width: 16px; height: 16px; fill: currentColor; }
+
+        /* ---------------- الهيدر واللوجو ---------------- */
+        .header { text-align: center; margin-bottom: 20px; }
+        .logo-container {
+            width: 90px; height: 90px; margin: 0 auto 10px auto;
+            border: 2px dashed rgba(212, 175, 55, 0.5); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; background: rgba(0,0,0,0.2); transition: 0.3s;
+        }
+        .logo { width: 100%; height: 100%; object-fit: contain; display: none; }
+        .project-name { color: var(--gold); font-size: 1.2em; margin-bottom: 5px; font-weight: bold; }
+        .main-title { font-size: 3em; font-weight: 900; margin: 0; text-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
+
+        /* ---------------- قسم منصة التتويج (أعلى 3 طلاب) ---------------- */
+        .top3-header { text-align: center; margin-bottom: 40px; margin-top: 30px; }
+        .top3-header h2 { font-size: 2.2em; color: var(--gold); margin: 0; font-weight: 900; }
+        .top3-header p { color: var(--text-muted); font-size: 1.1em; margin-top: 5px; }
+
+        .podium-container {
+            display: flex; justify-content: center; align-items: flex-end; /* لمحاذاة البطاقات من الأسفل */
+            gap: 20px; max-width: 900px; margin: 0 auto 60px auto;
+        }
+        
+        .podium-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px; padding: 40px 15px 20px 15px;
+            text-align: center; width: 260px; position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        /* ضبط المركز الأول (الوسط) */
+        .podium-card.rank-1 { height: 360px; border-color: rgba(212, 175, 55, 0.4); order: 2; z-index: 2; box-shadow: 0 0 30px rgba(212, 175, 55, 0.15); background: rgba(212, 175, 55, 0.05); }
+        /* ضبط المركز الثاني (اليمين) */
+        .podium-card.rank-2 { height: 300px; border-color: rgba(224, 224, 224, 0.2); order: 1; }
+        /* ضبط المركز الثالث (اليسار) */
+        .podium-card.rank-3 { height: 300px; border-color: rgba(205, 127, 50, 0.2); order: 3; }
+
+        /* دائرة الرقم */
+        .podium-rank {
+            position: absolute; top: -25px; left: 50%; transform: translateX(50%); /* 50% لليمين بسبب RTL */
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5em; font-weight: bold; color: #000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .rank-1 .podium-rank { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+        .rank-2 .podium-rank { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        .rank-3 .podium-rank { background: linear-gradient(135deg, #f6d365 0%, #ffb199 100%); }
+
+        /* صورة وصاحب المركز */
+        .podium-photo {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            margin: 0 auto 15px auto; border: 3px solid transparent; background: #fff;
+        }
+        .rank-1 .podium-photo { border-color: var(--gold); width: 120px; height: 120px; margin-top: 10px; }
+        .rank-2 .podium-photo { border-color: var(--silver); }
+        .rank-3 .podium-photo { border-color: var(--bronze); }
+
+        .podium-name { font-size: 1.5em; font-weight: bold; margin-bottom: 8px; color: #fff; }
+        .podium-score { font-size: 1.3em; color: var(--gold); font-weight: bold; }
+
+        /* ---------------- قسم باقي المشاركين ---------------- */
+        .section-divider {
+            text-align: center; margin: 40px 0 20px 0;
+            font-size: 1.5em; color: var(--text-muted); font-weight: bold;
+        }
+
+        .list-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .list-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px; padding: 12px 25px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: 0.3s;
+        }
+        .list-card:hover { background: rgba(255, 255, 255, 0.08); }
+        
+        .list-right { display: flex; align-items: center; gap: 20px; }
+        .list-rank { font-size: 1.2em; color: #666; font-weight: bold; width: 30px; text-align: center; }
+        .list-photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
+        .list-name { font-size: 1.3em; font-weight: bold; color: #fff; }
+        
+        .list-left .list-score { font-size: 1.2em; color: var(--gold); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>مشروع فسيحوا القرآني - لوحة الشرف الحية</h1>
-        <div id="displayList" class="grid">
-            <p style="text-align: center; grid-column: 1/-1; font-size: 1.5rem; color: var(--text-muted);">جاري تحميل لوحة الشرف المباشرة...</p>
+    <!-- الشريط العلوي -->
+    <div class="top-nav">
+        <div class="nav-buttons">
+            <button class="nav-btn gold-outline" onclick="toggleFullScreen()">
+                <svg class="fullscreen-icon" viewBox="0 0 24 24">
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                </svg>
+                ملء الشاشة
+            </button>
+            <button class="nav-btn" onclick="window.open('admin.html', '_blank')">لوحة الإدارة</button>
         </div>
+        <div class="clock-widget" id="live-clock">--:--</div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+    <!-- الهيدر -->
+    <div class="header">
+        <div class="logo-container" id="logo-container">
+            <img id="main-logo" src="" alt="اللوجو" class="logo">
+        </div>
+        <div class="project-name">مشروع فسيروا القرآني</div>
+        <h1 class="main-title">ملتقى فاستبقوا الخيرات</h1>
+    </div>
 
+    <!-- الأقسام الديناميكية (المنصة + القائمة) -->
+    <div id="podium-section"></div>
+    <div id="list-section"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script>
+        // إعدادات الاتصال بقاعدة بيانات Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyA3RW60RPjgVAZoh2jaw2Nwp5br5-2lE",
+            apiKey: "AIzaSyA3RW60RPjaGvAZoh2jawX2NwP5br5-2lE",
             authDomain: "fasiru-5f537.firebaseapp.com",
+            databaseURL: "https://fasiru-5f537-default-rtdb.firebaseio.com",
             projectId: "fasiru-5f537",
             storageBucket: "fasiru-5f537.firebasestorage.app",
             messagingSenderId: "717351224516",
-            appId: "1:717351224516:web:73b1712f0c4c902bcb591"
+            appId: "1:717351224516:web:73b1712cf0c4c902bcb591"
         };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        // تشغيل الساعة
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'م' : 'ص';
+            hours = hours % 12; hours = hours ? hours : 12; 
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('live-clock').innerText = hours + ':' + minutes + ' ' + ampm;
+        }
+        setInterval(updateClock, 1000); updateClock();
 
-        const studentsRef = ref(db, 'students');
-        onValue(studentsRef, (snapshot) => {
-            const students = snapshot.val();
-            const container = document.getElementById('displayList');
-            container.innerHTML = '';
-            
-            if(students) {
-                students.forEach(student => {
-                    container.innerHTML += `
-                        <div class="card">
-                            <div class="name">${student.name}</div>
-                            <div class="score">${student.parts} جزء و ${student.pages} صفحة</div>
-                        </div>
-                    `;
+        // ملء الشاشة
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`خطأ: ${err.message}`);
                 });
+            } else { if (document.exitFullscreen) document.exitFullscreen(); }
+        }
+
+        // تنسيق الصفحات والأجزاء
+        function formatPages(total) {
+            let juz = Math.floor(total / 20); let pg = total % 20; let res = [];
+            if (juz > 0) res.push(juz + " جزءًا"); if (pg > 0) res.push(pg + " صفحات");
+            return res.length > 0 ? res.join(" و ") : "لم يبدأ بعد";
+        }
+
+        // تحديث اللوجو
+        function updateLogoDisplay(logoBase64) {
+            const logoImg = document.getElementById('main-logo');
+            const logoContainer = document.getElementById('logo-container');
+            if (logoBase64) {
+                logoImg.src = logoBase64; logoImg.style.display = 'block';
+                logoContainer.style.border = 'none'; logoContainer.style.background = 'transparent';
+            } else {
+                logoImg.style.display = 'none';
+                logoContainer.style.border = '2px dashed rgba(212, 175, 55, 0.5)'; logoContainer.style.background = 'rgba(0,0,0,0.2)';
             }
-        });
+        }
+
+        // رسم وترتيب الشاشة
+        function renderBoard(studentsObj) {
+            let data = studentsObj ? Object.keys(studentsObj).map(key => studentsObj[key]) : [];
+
+            // ترتيب تنازلي حسب الإنجاز الكلي
+            data.sort((a, b) => (b.totalPages || 0) - (a.totalPages || 0));
+            
+            const podiumSec = document.getElementById('podium-section');
+            const listSec = document.getElementById('list-section');
+            
+            podiumSec.innerHTML = ''; listSec.innerHTML = '';
+            
+            const defaultSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a3b1ab"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+
+            // 1. إنشاء منصة التتويج (أول 3)
+            if(data.length > 0) {
+                let podiumHTML = `
+                <div class="top3-header">
+                    <h2>أعلى ثلاثة طلاب</h2>
+                    <p>الترتيب الموحد - من أصل ${data.length} مشاركين</p>
+                </div>
+                <div class="podium-container">`;
+                
+                let limit = Math.min(3, data.length);
+                for(let i = 0; i < limit; i++) {
+                    let std = data[i];
+                    let total = std.totalPages || 0;
+                    let photoSrc = std.photo ? std.photo : defaultSvg;
+                    
+                    // تحديد مكان البطاقة في المنصة
+                    let flexOrder = (i === 0) ? 2 : ((i === 1) ? 1 : 3);
+                    let rankClass = (i === 0) ? 'rank-1' : ((i === 1) ? 'rank-2' : 'rank-3');
+                    
+                    podiumHTML += `
+                    <div class="podium-card ${rankClass}" style="order: ${flexOrder};">
+                        <div class="podium-rank">${i+1}</div>
+                        <img src="${photoSrc}" class="podium-photo" alt="">
+                        <div class="podium-name">${std.name}</div>
+                        <div class="podium-score">${formatPages(total)}</div>
+                    </div>`;
+                }
+                podiumHTML += `</div>`;
+                podiumSec.innerHTML = podiumHTML;
+            }
+
+            // 2. إنشاء قائمة باقي المشاركين (من المركز الرابع فما فوق)
+            if(data.length > 3) {
+                let listHTML = `
+                <div class="section-divider">تكملة ترتيب المشاركين</div>
+                <div class="list-container">`;
+                
+                for(let i = 3; i < data.length; i++) {
+                    let std = data[i];
+                    let total = std.totalPages || 0;
+                    let photoSrc = std.photo ? std.photo : defaultSvg;
+                    
+                    // تنسيق الرقم (مثال: 04, 05)
+                    let formattedRank = String(i+1).padStart(2, '0');
+
+                    listHTML += `
+                    <div class="list-card">
+                        <div class="list-right">
+                            <span class="list-rank">${formattedRank}</span>
+                            <img src="${photoSrc}" class="list-photo" alt="">
+                            <span class="list-name">${std.name}</span>
+                        </div>
+                        <div class="list-left">
+                            <span class="list-score">${formatPages(total)}</span>
+                        </div>
+                    </div>`;
+                }
+                listHTML += `</div>`;
+                listSec.innerHTML = listHTML;
+            }
+        }
+
+        // الاستماع اللحظي لأي تغيير بقاعدة البيانات (يشتغل من أي جهاز وأي مكان)
+        db.ref('logo').on('value', snap => updateLogoDisplay(snap.val()));
+        db.ref('students').on('value', snap => renderBoard(snap.val()));
     </script>
 </body>
 </html>
