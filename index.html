@@ -125,6 +125,32 @@
         .list-name { font-size: 1.3em; font-weight: bold; color: #fff; }
         
         .list-left .list-score { font-size: 1.2em; color: var(--gold); font-weight: bold; }
+
+        /* تعديل خاص بشاشات الموبايل فقط - يمنع قص بطاقات المنصة على الأطراف */
+        @media (max-width: 640px) {
+            .podium-container {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .podium-card {
+                width: 44%;
+                min-width: 130px;
+                height: auto !important;
+                padding: 30px 10px 16px 10px;
+                order: 2 !important;
+            }
+            .podium-card.rank-1 {
+                width: 92%;
+                order: 1 !important;
+                margin-bottom: 4px;
+            }
+            .podium-card.rank-1 .podium-photo {
+                width: 90px;
+                height: 90px;
+            }
+            .main-title { font-size: 2.1em; }
+            .top3-header h2 { font-size: 1.6em; }
+        }
     </style>
 </head>
 <body>
