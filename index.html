@@ -151,6 +151,15 @@
             .main-title { font-size: 2.1em; }
             .top3-header h2 { font-size: 1.6em; }
         }
+
+        /* تعديل الصور على الموبايل عشان ما تنمغط */
+        @media screen and (max-width: 768px) {
+            img, .podium-photo, .list-photo {
+                object-fit: cover !important;
+                aspect-ratio: 1 / 1 !important;
+                border-radius: 50% !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -171,6 +180,7 @@
 
     <!-- الهيدر -->
     <div class="header">
+        <h2 style="text-align: center; color: var(--gold); margin-top: -10px; margin-bottom: 20px; font-size: 2rem; text-shadow: 0 0 10px rgba(212,175,55,0.4);">مركز كفرأبيل القرآني</h2>
         <div class="logo-container" id="logo-container">
             <img id="main-logo" src="" alt="اللوجو" class="logo">
         </div>
@@ -258,7 +268,7 @@
                 let podiumHTML = `
                 <div class="top3-header">
                     <h2>أعلى ثلاثة طلاب</h2>
-                    <p>الترتيب الموحد - من أصل ${data.length} مشاركين</p>
+                    <p>الترتيب الموحد - من أصل ${data.length} مشارك</p>
                 </div>
                 <div class="podium-container">`;
                 
