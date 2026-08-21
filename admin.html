@@ -3,217 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غرفة التحكم - فسيروا القرآني</title>
+    <title>لوحة التحكم - مشروع فسيحوا القرآني</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        
-        :root { --bg-dark: #0f172a; --panel-bg: #1e293b; --gold: #d4af37; --accent: #10b981; --text: #f8fafc; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg-dark); color: var(--text); padding: 20px; margin: 0; }
-        .container { max-width: 1000px; margin: auto; }
-        .header { text-align: center; border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: 20px; margin-bottom: 30px; }
-        h1 { color: var(--gold); margin: 0; }
-        .card { background: var(--panel-bg); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-        h3 { color: var(--accent); margin-top: 0; }
-        input { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 8px; font-family: inherit; font-size: 15px; outline: none; }
-        input:focus { border-color: var(--gold); }
-        button { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; font-family: inherit; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #059669; }
-        button.gold-btn { background: var(--gold); color: black; font-size: 1.2em; width: 100%; padding: 15px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-        button.gold-btn:hover { background: #b8972e; }
-        .student-grid { display: grid; gap: 15px; }
-        .student-row { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border-right: 4px solid var(--gold); }
-        .std-name { font-size: 1.2em; font-weight: bold; margin-bottom: 5px; }
-        .badges { display: flex; gap: 10px; font-size: 0.85em; }
-        .badge { background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; }
-        .badge-draft { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-        .inputs-group { display: flex; gap: 10px; }
-        .inputs-group input { width: 70px; text-align: center; }
-        #login-screen { max-width: 400px; margin: 100px auto; text-align: center; }
-        #login-screen input { width: 100%; margin-bottom: 15px; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+        :root {
+            --bg-color: #112c1e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --gold: #d4af37;
+            --text-main: #ffffff;
+            --text-muted: #a3b1ab;
+        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Tajawal', sans-serif; padding: 20px; direction: rtl; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: var(--gold); margin-bottom: 30px; }
+        .student-card { background: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .student-name { font-size: 1.2rem; font-weight: 700; flex: 1; min-width: 150px; }
+        input { background: #0a1b12; border: 1px solid rgba(212, 175, 55, 0.5); color: #fff; padding: 8px 12px; border-radius: 8px; width: 80px; text-align: center; font-family: 'Tajawal', sans-serif; }
+        button { background: #2e7d32; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Tajawal', sans-serif; font-weight: 700; transition: 0.2s; }
+        button:hover { background: #388e3c; }
+        .login-box { max-width: 400px; margin: 100px auto; background: var(--card-bg); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid var(--gold); }
+        .login-box input { width: 80%; margin-bottom: 15px; padding: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="card">
-        <h1 style="margin-bottom: 20px;">🔒 غرفة التحكم</h1>
-        <input type="password" id="admin-pass" placeholder="أدخل الرمز السري">
-        <button onclick="checkPass()" style="width: 100%;">تسجيل الدخول</button>
+    <div id="loginScreen" class="login-box">
+        <h2>تسجيل دخول لوحة التحكم</h2>
+        <p style="color: var(--text-muted); margin-bottom: 15px;">أدخل كلمة المرور (123)</p>
+        <input type="password" id="passInput" placeholder="كلمة المرور">
+        <br>
+        <button onclick="checkPass()">دخول</button>
     </div>
 
-    <div id="admin-panel" class="container" style="display: none;">
-        <div class="header">
-            <h1>غرفة التحكم | مشروع فسيروا القرآني</h1>
-            <p style="color: #94a3b8;">ملتقى فاستبقوا الخيرات - نظام إرسال واعتماد السرد</p>
-        </div>
-
-        <div class="card" style="border-top: 4px solid var(--gold);">
-            <h3>🖼️ تغيير شعار المشروع (اللوجو)</h3>
-            <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                <input type="file" id="sysLogo" accept="image/*" style="flex: 1; min-width: 200px;">
-                <button onclick="updateSystemLogo()" style="background: var(--gold); color: black;">رفع وتفعيل اللوجو</button>
-                <button onclick="removeSystemLogo()" style="background: transparent; border: 1px solid #ef4444; color: #ef4444;">حذف اللوجو</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>➕ تسجيل طالب جديد</h3>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <input type="text" id="newName" placeholder="الاسم الرباعي" style="flex: 2; min-width: 200px;">
-                <input type="file" id="newPhoto" accept="image/*" style="flex: 1; min-width: 200px;" title="اختر صورة">
-                <button onclick="addStudent()">حفظ وإضافة</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3>📋 شاشة الرصد <span id="round-number" style="color:var(--gold); font-size: 0.8em;"></span></h3>
-            </div>
-            <div class="student-grid" id="studentsList"></div>
-            <div style="margin-top: 40px;">
-                <button class="gold-btn" onclick="publishRound()">🚀 اعتماد النتائج وعرضها على الشاشة الكبيرة 🚀</button>
-            </div>
-        </div>
-        
-        <button onclick="resetAll()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; margin-top: 20px;">⚠ تصفير النظام كاملاً (خطر)</button>
+    <div id="adminPanel" class="container" style="display: none;">
+        <h1>لوحة تحكم رصد الإنجازات</h1>
+        <div id="studentsList"></div>
     </div>
 
-    <script>
-        function checkPass() {
-            if (document.getElementById('admin-pass').value === "123") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                renderAdminList();
-            } else { alert('الرمز السري غير صحيح'); }
-        }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
 
-        // --- التعديل السحري: كود لتصغير حجم الصورة تلقائياً ---
-        function compressImage(file, callback) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 150; // تصغير العرض
-                    const MAX_HEIGHT = 150; // تصغير الطول
-                    let width = img.width;
-                    let height = img.height;
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3RW60RPjgVAZoh2jaw2Nwp5br5-2lE",
+            authDomain: "fasiru-5f537.firebaseapp.com",
+            projectId: "fasiru-5f537",
+            storageBucket: "fasiru-5f537.firebasestorage.app",
+            messagingSenderId: "717351224516",
+            appId: "1:717351224516:web:73b1712f0c4c902bcb591"
+        };
 
-                    if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                    }
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    // ضغط الصورة لصيغة JPEG بحجم صغير جداً
-                    callback(canvas.toDataURL('image/jpeg', 0.7)); 
-                }
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const defaultStudents = [
+            { id: 1, name: "احمد عبدالله ربابعه", parts: 0, pages: 0 },
+            { id: 2, name: "هشام موسى دهون", parts: 0, pages: 0 },
+            { id: 3, name: "أسامة احمد بشارات", parts: 0, pages: 0 },
+            { id: 4, name: "مقداد شاكر مقدادي", parts: 0, pages: 0 }
+        ];
+
+        window.checkPass = function() {
+            if(document.getElementById('passInput').value === '123') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadStudents();
+            } else {
+                alert('كلمة المرور خطأ (الباسورد: 123)');
             }
         }
 
-        function updateSystemLogo() {
-            const file = document.getElementById('sysLogo').files[0];
-            if (file) {
-                compressImage(file, (base64) => {
-                    localStorage.setItem('projectLogo', base64);
-                    alert("تم تحديث اللوجو بنجاح!");
-                    document.getElementById('sysLogo').value = '';
-                });
-            }
+        function loadStudents() {
+            const studentsRef = ref(db, 'students');
+            onValue(studentsRef, (snapshot) => {
+                const data = snapshot.val() || defaultStudents;
+                renderList(data);
+            });
         }
 
-        function removeSystemLogo() {
-            if(confirm("هل أنت متأكد من إزالة اللوجو؟")) { localStorage.removeItem('projectLogo'); alert("تم إزالة اللوجو."); }
-        }
-
-        function formatPages(total) {
-            let juz = Math.floor(total / 20); let pg = total % 20; let res = [];
-            if (juz > 0) res.push(juz + " جزء"); if (pg > 0) res.push(pg + " صفحة");
-            return res.length > 0 ? res.join(" و ") : "0";
-        }
-
-        function addStudent() {
-            const name = document.getElementById('newName').value;
-            const file = document.getElementById('newPhoto').files[0];
-            if(!name) return;
-
-            let data = JSON.parse(localStorage.getItem('quranData')) || [];
-            const saveToLocal = (photoBase64) => {
-                data.push({ id: Date.now(), name: name, photo: photoBase64, totalPages: 0, draftPages: 0 });
-                try {
-                    localStorage.setItem('quranData', JSON.stringify(data));
-                    document.getElementById('newName').value = '';
-                    document.getElementById('newPhoto').value = '';
-                    renderAdminList();
-                } catch (e) {
-                    alert("الذاكرة ممتلئة! يرجى حذف بعض البيانات.");
-                }
-            };
-            
-            // استخدام كود التصغير قبل الحفظ
-            if (file) compressImage(file, saveToLocal); else saveToLocal(null);
-        }
-
-        function renderAdminList() {
-            let data = JSON.parse(localStorage.getItem('quranData')) || [];
-            let currentRound = localStorage.getItem('currentRound') || 1;
-            document.getElementById('round-number').innerText = `(إدخالات الدور الحالي: ${currentRound})`;
-            const list = document.getElementById('studentsList');
-            list.innerHTML = '';
-            
-            data.forEach(std => {
-                list.innerHTML += `
-                    <div class="student-row">
+        function renderList(students) {
+            const container = document.getElementById('studentsList');
+            container.innerHTML = '';
+            students.forEach((student, index) => {
+                container.innerHTML += `
+                    <div class="student-card">
+                        <div class="student-name">${student.name}</div>
+                        <div>المجموع الحالي: ${student.parts} جزء و ${student.pages} صفحة</div>
                         <div>
-                            <div class="std-name">${std.name}</div>
-                            <div class="badges">
-                                <span class="badge">المجموع الكلي: ${formatPages(std.totalPages || 0)}</span>
-                                <span class="badge badge-draft">سرد الآن: ${formatPages(std.draftPages || 0)}</span>
-                            </div>
-                        </div>
-                        <div class="inputs-group">
-                            <input type="number" id="juz_${std.id}" placeholder="أجزاء" min="0">
-                            <input type="number" id="pg_${std.id}" placeholder="صفحات" min="0">
-                            <button onclick="saveDraft(${std.id})">تأكيد الرصد</button>
+                            <input type="number" id="parts_${index}" placeholder="أجزاء" value="0">
+                            <input type="number" id="pages_${index}" placeholder="صفحات" value="0">
+                            <button onclick="updateStudent(${index})">تأكيد الرصد</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function saveDraft(id) {
-            let juz = parseInt(document.getElementById('juz_' + id).value) || 0;
-            let pg = parseInt(document.getElementById('pg_' + id).value) || 0;
-            if (juz === 0 && pg === 0) return;
-            let data = JSON.parse(localStorage.getItem('quranData')) || [];
-            let student = data.find(s => s.id === id);
-            if (student) {
-                student.draftPages = (student.draftPages || 0) + (juz * 20) + pg;
-                localStorage.setItem('quranData', JSON.stringify(data));
-                renderAdminList(); 
-            }
-        }
+        window.updateStudent = function(index) {
+            const pInput = parseInt(document.getElementById(`parts_${index}`).value) || 0;
+            const pgInput = parseInt(document.getElementById(`pages_${index}`).value) || 0;
 
-        function publishRound() {
-            if(!confirm("هل أنت متأكد من الترحيل؟ هذا الإجراء سيقوم بتحديث الشاشة الكبيرة.")) return;
-            let data = JSON.parse(localStorage.getItem('quranData')) || [];
-            data.forEach(std => {
-                std.totalPages = (std.totalPages || 0) + (std.draftPages || 0);
-                std.draftPages = 0; 
-            });
-            let currentRound = parseInt(localStorage.getItem('currentRound') || 1);
-            localStorage.setItem('currentRound', currentRound + 1);
-            localStorage.setItem('quranData', JSON.stringify(data)); 
-            renderAdminList();
-        }
+            const studentsRef = ref(db, 'students');
+            onValue(studentsRef, (snapshot) => {
+                let students = snapshot.val() || defaultStudents;
+                students[index].parts += pInput;
+                students[index].pages += pgInput;
 
-        function resetAll() {
-            if(confirm("تحذير أخير! سيتم مسح بيانات جميع الطلاب والصور، هل أنت متأكد؟")) {
-                localStorage.removeItem('quranData'); localStorage.setItem('currentRound', 1); renderAdminList();
-            }
+                // تحويل الصفحات الزائدة لأجزاء (كل 20 صفحة = جزء مثلاً أو حسب نظامكم)
+                if(students[index].pages >= 20) {
+                    students[index].parts += Math.floor(students[index].pages / 20);
+                    students[index].pages = students[index].pages % 20;
+                }
+
+                set(studentsRef, students).then(() => {
+                    alert('تم رصد الإنجاز بنجاح وترحيله سحابياً!');
+                });
+            }, { onlyOnce: true });
         }
     </script>
 </body>
